@@ -1,29 +1,46 @@
 import React, {Component} from 'react'
-import './style.css'
+import Todoitems from './Todoitems.jsx'
+import TodoitemsData from './TodoitemsData'
+// function App(){
+//   const TodoitemsList = TodoitemsData.map(item => <Todoitems key={item.id} item={item}/>)
+//   return(
+//       <div className="todo-list">
+//         {TodoitemsList}
+//       </div>
+//     )
+// }
 class App extends Component{
-  constructor() {
+  constructor(){
     super()
     this.state= {
-        count: 0
+      todos: TodoitemsData
     }
-    this.handleClick = this.handleClick.bind(this)
+    this.handelChange = this.handelChange.bind(this)
   }
-  handleClick(){
-    // this.setState({count: this.state.count+1})
+
+  handelChange(id){
     this.setState(preState => {
+      const updateToDos = this.state.todos.map(item => {
+        if(item.id===id){
+          item.compleated = !item.compleated;
+        }
+        return item
+      });
       return {
-        count: preState.count +1
+        todos: updateToDos
       }
     })
   }
+
   render(){
+    const TodoitemsList = this.state.todos.map(item => <Todoitems key={item.id} item={item}
+      handelChange = {this.handelChange}
+      />)
     return(
-      <div className="stat-count">
-        <h1>{this.state.count}</h1>
-        <br/>
-        <button onClick={this.handleClick}>Click!</button>
-      </div>
-    )
+        <div className="todo-list">
+          {TodoitemsList}
+        </div>
+      )
   }
 }
 export default App;
