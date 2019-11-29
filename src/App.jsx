@@ -1,45 +1,29 @@
 import React, {Component} from 'react'
-import Todoitems from './Todoitems.jsx'
-import TodoitemsData from './TodoitemsData'
-// function App(){
-//   const TodoitemsList = TodoitemsData.map(item => <Todoitems key={item.id} item={item}/>)
-//   return(
-//       <div className="todo-list">
-//         {TodoitemsList}
-//       </div>
-//     )
-// }
+import PlanetsData from './components/PlanetsData.jsx'
 class App extends Component{
-  constructor(){
+  constructor() {
     super()
     this.state= {
-      todos: TodoitemsData
+      isLodding: true,
+      data: []
     }
-    this.handelChange = this.handelChange.bind(this)
   }
-
-  handelChange(id){
-    this.setState(preState => {
-      const updateToDos = this.state.todos.map(item => {
-        if(item.id===id){
-          item.compleated = !item.compleated;
-        }
-        return item
-      });
-      return {
-        todos: updateToDos
-      }
+  componentDidMount(){
+    fetch('https://swapi.co/api/people/1/')
+    .then(resp => resp.json())
+    .then(data => {
+      // console.log(data)
+      this.setState({
+        isLodding: false,
+        data: data
+      })
     })
   }
-
   render(){
-    const TodoitemsList = this.state.todos.map(item => <Todoitems key={item.id} item={item}
-      handelChange = {this.handelChange}
-      />)
     return(
-        <div className="todo-list">
-          {TodoitemsList}
-        </div>
+      <div>
+        {this.state.isLodding ? <h1>Lodding ....</h1> : <h2><PlanetsData data= {this.state.data}/></h2>}
+      </div>
       )
   }
 }
