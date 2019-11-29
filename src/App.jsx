@@ -4,26 +4,26 @@ class App extends Component{
   constructor() {
     super()
     this.state= {
-      isLodding: true,
-      data: []
+      firstName: '',
+      lastName: ''
     }
+    this.handelChange = this.handelChange.bind(this)
   }
-  componentDidMount(){
-    fetch('https://swapi.co/api/people/1/')
-    .then(resp => resp.json())
-    .then(data => {
-      // console.log(data)
-      this.setState({
-        isLodding: false,
-        data: data
-      })
+  handelChange(event){
+    const {name, value} = event.target
+    this.setState({
+      [name]: value
     })
   }
   render(){
     return(
-      <div>
-        {this.state.isLodding ? <h1>Lodding ....</h1> : <h2><PlanetsData data= {this.state.data}/></h2>}
-      </div>
+      <form>
+        <input type="text" name="firstName" value={this.state.firstName} onChange={this.handelChange}/>
+        <br/>
+        <br/>
+        <input type="text" name="lastName" value={this.state.lastName} onChange={this.handelChange}/>
+        <h1>{this.state.firstName} {this.state.lastName}</h1>
+      </form>
       )
   }
 }
